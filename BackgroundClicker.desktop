@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Background Auto Clicker
+Comment=A background auto clicker with GUI
+Exec=/mnt/2050F97550F9250/Github/BackGroundAutoClicker/start.sh
+Icon=/home/yatharth/Pictures/Thumbnails/BackgroundAutoClicker.svg
+Terminal=false
+NoDisplay=false
+Categories=Utility;
