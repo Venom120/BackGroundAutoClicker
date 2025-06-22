@@ -17,7 +17,6 @@ class AutoInputGUI(tk.Tk): # Inherit from tk.Tk for main window
         self.running = False
         self.hotkey_available = False
         self.listener_thread = None
-        self.debug_mode = False # Set to True to enable debug mode
 
         # Initialize HotkeyHandler logic
         try:
@@ -150,19 +149,6 @@ class AutoInputGUI(tk.Tk): # Inherit from tk.Tk for main window
             print(f"Failed to bind global hotkey 'F6': {e}")
             # In a GUI application, you might want to signal the main thread to show a warning here
             # For now, we'll just print to console.
-
-        # Add debug listener for any key press
-        if self.debug_mode:
-            self._start_debug_listener()
-
-    def _start_debug_listener(self):
-        if not self.hotkey_available:
-            return
-        try:
-            keyboard.on_press(lambda event: print(f"Key pressed: {event.name}"))
-            print("Debug listener for key presses started.")
-        except Exception as e:
-            print(f"Failed to start debug listener: {e}")
 
     def stop(self):
         if self.hotkey_available: # Removed redundant keyboard is not None check
