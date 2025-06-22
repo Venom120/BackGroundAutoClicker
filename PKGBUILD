@@ -4,7 +4,7 @@ _tag=cb55a809a5ec8ef636cf2d234d92d8ce35123dc6 # Replace with the actual tag if n
 _sourceName="bgclicker"
 
 pkgname=bgclicker-git
-pkgver=latest.1.ge22353d
+pkgver=1.0.0 # Replace with your actual version
 pkgrel=1
 pkgdesc="A simple Python application with a GUI for performing background mouse clicks and keyboard inputs."
 arch=('any')
