@@ -10,7 +10,7 @@ depends=('python' 'tk' 'xdotool' 'python-keyboard') # Translating req.txt depend
 source=(
   "${pkgname}-${pkgver}.tar.gz::https://github.com/Venom120/BackGroundAutoClicker/archive/refs/tags/v${pkgver}.tar.gz" # Assuming a tag exists or will be created
   "BackgroundClicker.desktop"
-  "assets/BackgroundAutoClicker.svg" # Assuming icon location
+  "assets/bgclicker-gui.svg" # Assuming icon location
 )
 sha256sums=('SKIP' # Need to generate checksum for the tarball
             'SKIP' # Need to generate checksum for BackgroundClicker.desktop
@@ -24,5 +24,5 @@ package() {
   install -Dm644 BackgroundClicker.desktop "$pkgdir"/usr/share/applications/bgclicker-gui.desktop
 
   # Install icon
-  install -Dm644 assets/BackgroundAutoClicker.svg "$pkgdir"/usr/share/icons/hicolor/scalable/apps/bgclicker-gui.svg # Standard icon location
+  install -Dm644 assets/bgclicker-gui.svg "$pkgdir"/usr/share/icons/hicolor/scalable/apps/bgclicker-gui.svg # Standard icon location
 }
