@@ -3,16 +3,32 @@ from tkinter import ttk, messagebox
 import subprocess
 import threading
 import time
+import keyboard
 
-from hotkey_handler import HotkeyHandler
-
-class AutoInputGUI:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Background Auto Input GUI")
-        self.root.geometry("720x500")
+class AutoInputGUI(tk.Tk): # Inherit from tk.Tk for main window
+    def __init__(self):
+        super().__init__() # Call parent constructor
+        self.title("Background Auto Input GUI")
+        self.geometry("720x500")
 
         self.running = False
+        self.hotkey_available = False
+        self.listener_thread = None
+        self.debug_mode = False # Set to True to enable debug mode
+
+        # Initialize HotkeyHandler logic
+        try:
+            import keyboard
+            self.hotkey_available = True
+        except ImportError:
+            print("Keyboard library not available. Global hotkeys disabled.")
+        except Exception as e:
+            print(f"Error importing keyboard library: {e}")
+            self.hotkey_available = False
+
+        if self.hotkey_available:
+            self.listener_thread = threading.Thread(target=self._run_listener, daemon=True)
+            self.listener_thread.start()
 
         try:
             # Store window titles and their corresponding IDs
@@ -24,33 +40,33 @@ class AutoInputGUI:
             self.window_info = {} # Ensure window_info is initialized
 
         for i in range(4): # Increased columnspan for the new button
-            root.columnconfigure(i, weight=1)
+            self.columnconfigure(i, weight=1) # Use self.columnconfigure
 
         row = 0
-        ttk.Label(root, text="CLICK").grid(row=row, column=0, sticky="w", padx=10, pady=5)
-        ttk.Label(root, text="DELAY").grid(row=row, column=2, columnspan=2, sticky="w", padx=10)
+        ttk.Label(self, text="CLICK").grid(row=row, column=0, sticky="w", padx=10, pady=5) # Use self
+        ttk.Label(self, text="DELAY").grid(row=row, column=2, columnspan=2, sticky="w", padx=10) # Use self
 
         row += 1
         self.click_var = tk.StringVar(value="L")
         self.click_radio_buttons = [
-            ttk.Radiobutton(root, text="Left", variable=self.click_var, value="L"),
-            ttk.Radiobutton(root, text="Middle", variable=self.click_var, value="M"),
-            ttk.Radiobutton(root, text="Right", variable=self.click_var, value="R")
+            ttk.Radiobutton(self, text="Left", variable=self.click_var, value="L"), # Use self
+            ttk.Radiobutton(self, text="Middle", variable=self.click_var, value="M"), # Use self
+            ttk.Radiobutton(self, text="Right", variable=self.click_var, value="R") # Use self
         ]
         self.click_radio_buttons[0].grid(row=row, column=0, sticky="w", padx=10)
         self.click_radio_buttons[1].grid(row=row, column=0)
         self.click_radio_buttons[2].grid(row=row, column=0, sticky="e", padx=10)
 
-        self.vertical_separator = ttk.Separator(root, orient="vertical")
+        self.vertical_separator = ttk.Separator(self, orient="vertical") # Use self
         self.vertical_separator.grid(row=0, column=1, rowspan=3, sticky="ns", padx=10)
 
         self.delay_var = tk.IntVar(value=1000) # Default delay to 1000ms (1 second)
-        self.delay_spinbox = tk.Spinbox(root, from_=1, to=1000, textvariable=self.delay_var, width=5)
+        self.delay_spinbox = tk.Spinbox(self, from_=1, to=1000, textvariable=self.delay_var, width=5) # Use self
         self.delay_spinbox.grid(row=row, column=2, sticky="w", padx=5)
         self.delay_unit = tk.StringVar(value="ms")
         self.delay_radio_buttons = [
-            ttk.Radiobutton(root, text="ms", variable=self.delay_unit, value="ms"),
-            ttk.Radiobutton(root, text="s", variable=self.delay_unit, value="s")
+            ttk.Radiobutton(self, text="ms", variable=self.delay_unit, value="ms"), # Use self
+            ttk.Radiobutton(self, text="s", variable=self.delay_unit, value="s") # Use self
         ]
         self.delay_radio_buttons[0].grid(row=row, column=2)
         self.delay_radio_buttons[1].grid(row=row, column=3, sticky="w")
@@ -58,47 +74,44 @@ class AutoInputGUI:
         row += 1
         self.click_type = tk.StringVar(value="single")
         self.click_type_radio_buttons = [
-            ttk.Radiobutton(root, text="single", variable=self.click_type, value="single"),
-            ttk.Radiobutton(root, text="hold", variable=self.click_type, value="hold")
+            ttk.Radiobutton(self, text="single", variable=self.click_type, value="single"), # Use self
+            ttk.Radiobutton(self, text="hold", variable=self.click_type, value="hold") # Use self
         ]
         self.click_type_radio_buttons[0].grid(row=row, column=0, sticky="w", padx=10)
         self.click_type_radio_buttons[1].grid(row=row, column=0)
 
         row += 1
-        ttk.Separator(root, orient="horizontal").grid(row=row, columnspan=4, sticky="ew", pady=10)
+        ttk.Separator(self, orient="horizontal").grid(row=row, columnspan=4, sticky="ew", pady=10) # Use self
 
         row += 1
-        ttk.Label(root, text="KEYBOARD").grid(row=row, column=0, sticky="w", padx=10)
+        ttk.Label(self, text="KEYBOARD").grid(row=row, column=0, sticky="w", padx=10) # Use self
 
         row += 1
         self.kb_enabled = tk.BooleanVar(value=False)
-        self.kb_input = tk.Entry(root, state='disabled')
+        self.kb_input = tk.Entry(self, state='disabled') # Use self
         self.kb_input.grid(row=row, column=1, columnspan=2, sticky="we", padx=10)
-        self.kb_check = ttk.Checkbutton(root, text="Enable", variable=self.kb_enabled, command=self.toggle_keyboard_input)
+        self.kb_check = ttk.Checkbutton(self, text="Enable", variable=self.kb_enabled, command=self.toggle_keyboard_input) # Use self
         self.kb_check.grid(row=row, column=0, sticky="w", padx=10)
 
         row += 1
-        ttk.Separator(root, orient="horizontal").grid(row=row, columnspan=4, sticky="ew", pady=10)
+        ttk.Separator(self, orient="horizontal").grid(row=row, columnspan=4, sticky="ew", pady=10) # Use self
 
         row += 1
-        ttk.Label(root, text="WINDOW").grid(row=row, column=0, sticky="w", padx=10)
+        ttk.Label(self, text="WINDOW").grid(row=row, column=0, sticky="w", padx=10) # Use self
 
         row += 1
         self.window_var = tk.StringVar()
         if self.window_list:
             self.window_var.set(self.window_list[-1])
-        self.window_menu = ttk.Combobox(root, textvariable=self.window_var, values=self.window_list)
+        self.window_menu = ttk.Combobox(self, textvariable=self.window_var, values=self.window_list) # Use self
         self.window_menu.grid(row=row, column=0, columnspan=4, sticky="we", padx=10)
 
         row += 1
-        ttk.Separator(root, orient="horizontal").grid(row=row, columnspan=4, sticky="ew", pady=10)
+        ttk.Separator(self, orient="horizontal").grid(row=row, columnspan=4, sticky="ew", pady=10) # Use self
 
         row += 1
-        self.start_button = ttk.Button(root, text="Start (F6)", command=self.toggle_input)
+        self.start_button = ttk.Button(self, text="Start (F6)", command=self.toggle_input) # Use self
         self.start_button.grid(row=row, column=0, columnspan=4, pady=10)
-
-        # Initialize HotkeyHandler
-        self.hotkey_handler = HotkeyHandler(self.toggle_input)
 
         # Initialize state for getting coordinates
         self.getting_coords = False
@@ -120,12 +133,41 @@ class AutoInputGUI:
         ]
 
         # Set window closing protocol to stop the hotkey handler
-        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.protocol("WM_DELETE_WINDOW", self.on_closing) # Use self.protocol
 
-    def on_closing(self):
-        if hasattr(self, 'hotkey_handler') and self.hotkey_handler:
-            self.hotkey_handler.stop()
-        self.root.destroy()
+    def _run_listener(self):
+        if not self.hotkey_available:
+            return
+
+        try:
+            # Attempt to add the F6 hotkey
+            keyboard.add_hotkey('f6', self.toggle_input) # Use self.toggle_input as callback
+            print("Global hotkey 'F6' registered.")
+        except Exception as e:
+            print(f"Failed to bind global hotkey 'F6': {e}")
+            # In a GUI application, you might want to signal the main thread to show a warning here
+            # For now, we'll just print to console.
+
+        # Add debug listener for any key press
+        if self.debug_mode:
+            self._start_debug_listener()
+
+    def _start_debug_listener(self):
+        if not self.hotkey_available:
+            return
+        try:
+            keyboard.on_press(lambda event: print(f"Key pressed: {event.name}"))
+            print("Debug listener for key presses started.")
+        except Exception as e:
+            print(f"Failed to start debug listener: {e}")
+
+    def stop(self):
+        if self.hotkey_available: # Removed redundant keyboard is not None check
+            try:
+                keyboard.unhook_all()
+                print("Keyboard hotkeys and listeners unhooked.")
+            except Exception as e:
+                print(f"Error unhooking keyboard: {e}")
 
     def toggle_keyboard_input(self):
         if self.kb_enabled.get():
@@ -206,7 +248,12 @@ class AutoInputGUI:
 
             time.sleep(delay / 1000.0)
 
+
+    def on_closing(self):
+        self.stop() # Call self.stop()
+        self.destroy()
+
+
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = AutoInputGUI(root)
-    root.mainloop()
+    app = AutoInputGUI() # Instantiate AutoInputGUI directly
+    app.mainloop() # Use app.mainloop()

@@ -11,69 +11,42 @@ A simple Python application with a GUI for performing background mouse clicks an
     cd BackGroundAutoClicker
     ```
 
-2.  **Create and activate a virtual environment:**
+3.  **Install using PKGBUILD (Arch Linux):**
+
+    If you are on Arch Linux or a derivative, you can build and install the package system-wide using the provided `PKGBUILD` file. This is the recommended method for desktop integration.
 
     ```bash
-    python -m venv .venv
-    source .venv/bin/activate
+    makepkg -si
     ```
 
-3.  **Install dependencies:**
-
-    ```bash
-    pip install -r req.txt
-    ```
+    This will install the application executable to `/usr/bin/bgclicker-gui` and the desktop entry to `/usr/share/applications/`.
 
 ## Running the Application
 
-The application can be run using the provided `start.sh` script or the `BackgroundClicker.desktop` file.
+After installing the application using the `PKGBUILD` (recommended for Arch Linux users), you can run it in two ways:
 
-### Using `start.sh`
+### From the Application Menu
 
-The `start.sh` script is a simple shell script that:
-- Navigates to the application directory.
-- Activates the Python virtual environment (`.venv`).
-- Runs the main application script (`main.py`).
+The application should appear in your desktop environment's application menu. Search for "Background Auto Input GUI" and launch it.
 
-To run the application using `start.sh`:
+### From the Terminal
 
-1.  Make the script executable:
-    ```bash
-    chmod +x start.sh
-    ```
-2.  Execute the script:
-    ```bash
-    sudo ./start.sh
-    ```
+Open a terminal and run the executable:
 
-### Using `setup.sh`
+```bash
+bgclicker-gui
+```
 
-The `setup.sh` script automates the process of setting up the application for desktop integration. It will:
-- Make the `start.sh` script executable.
-- Copy the application icon to a recognized location (`/home/your_username/Pictures/Thumbnails/`).
-- Copy the `BackgroundClicker.desktop` file to your applications directory (`~/.local/share/applications/`).
+### Running without Installation (for Development/Testing)
 
-To run the setup script:
+If you do not wish to install the application system-wide, you can run it directly from the cloned repository directory after installing dependencies in a virtual environment:
 
-1.  Make the script executable:
-    ```bash
-    chmod +x setup.sh
-    ```
-2.  Execute the script:
-    ```bash
-    ./setup.sh
-    ```
-    The script will prompt you to enter your username.
-
-### Using `BackgroundClicker.desktop`
-
-The `BackgroundClicker.desktop` file is a desktop entry file for Linux. It allows you to launch the application from your desktop environment's application menu or by double-clicking the file. It is configured to execute the `start.sh` script.
-
-To use the `.desktop` file:
-
-Before using the `.desktop` file, you need to run the `setup.sh` script to perform the necessary setup steps (making `start.sh` executable, copying the icon and desktop files). See the "Using `setup.sh`" section for instructions.
-
-After running `setup.sh`, the application should appear in your desktop environment's application menu. You can also double-click the `.desktop` file to launch it.
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r req.txt
+python main.py
+```
 
 ## Features
 
@@ -90,6 +63,6 @@ After running `setup.sh`, the application should appear in your desktop environm
 *   **`ModuleNotFoundError: No module named 'keyboard'`**: Ensure you have installed the dependencies using `pip install -r req.txt` and are running the script within the activated virtual environment.
 *   **Hotkey (F6) not working**:
     *   Check the terminal for any error or warning messages related to hotkey binding when the application starts.
-    *   Global hotkeys on Linux can sometimes require special permissions. Running the script with `sudo` might work as a test (`sudo ./start.sh`), but is generally not recommended for security.
+    *   Global hotkeys on Linux can sometimes require special permissions. Running the application with `sudo` might work as a test (`sudo bgclicker-gui`), but is generally not recommended for security.
     *   The `keyboard` library might have compatibility issues with certain display servers (e.g., Wayland). It generally works better with X11.
     *   Another application or your window manager might be using the F6 hotkey.
