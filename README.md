@@ -2,41 +2,52 @@
 
 A simple Python application with a GUI for performing background mouse clicks and keyboard inputs.
 
+**- Hold feature and keyboard feature has not been tested yet!!!**
+
 ## Setup
-1.  **Install using PKGBUILD (Arch Linux):**
-
-    If you are on Arch Linux or a derivative, you can build and install the package system-wide using the provided `PKGBUILD` file. This is the recommended method for desktop integration.
-
+1. **Install using yay**
+    If you are on Arch Linux or a derivative, you can directly install the software system wide using
     ```bash
-    makepkg -si
+    yay -S bgclicker-git
     ```
 
-    This will install the application executable to `/usr/bin/bgclicker-git` and the desktop entry to `/usr/share/applications/`.
+    A desktop entry named "bgclicker-git" will be created and can be used system wide. This is the recommended method for desktop integration.
+
+2.  **Install using PKGBUILD (Arch Linux):**
+
+    If you are on Arch Linux or a derivative, you can build and install the package system-wide using the provided `PKGBUILD` file.
+
+    ```bash
+    makepkg
+    ```
+
+These methods will install the application executable to `/usr/bin/bgclicker-git` and the desktop entry to `/usr/share/applications/`.
 
 ## Running the Application
 
-After installing the application using the `PKGBUILD` (recommended for Arch Linux users), you can run it in two ways:
-
 ### From the Application Menu
 
-The application should appear in your desktop environment's application menu. Search for "Background Auto Input GUI" and launch it.
+The application should appear in your desktop environment's application menu. Search for "bgclicker-git" and launch it.
 
 ### From the Terminal
 
 Open a terminal and run the executable:
 
 ```bash
-bgclicker
+sudo bgclicker-git
 ```
 
 ### Running without Installation (for Development/Testing)
 
-If you do not wish to install the application system-wide, you can run it directly from the cloned repository directory after installing dependencies in a virtual environment:
+If you do not wish to install the application system-wide, you can run it directly from the cloned repository directory after installing dependencies in a virtual environment or system-wide:
 
+#### Dependencies (can install using pacman)
+*   python
+*   tk
+*   python-keyboard
+
+#### To run
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r req.txt
 python main.py
 ```
 
@@ -52,9 +63,7 @@ python main.py
 
 ## Troubleshooting
 
-*   **`ModuleNotFoundError: No module named 'keyboard'`**: Ensure you have installed the dependencies using `pip install -r req.txt` and are running the script within the activated virtual environment.
 *   **Hotkey (F6) not working**:
-    *   Check the terminal for any error or warning messages related to hotkey binding when the application starts.
-    *   Global hotkeys on Linux can sometimes require special permissions. Running the application with `sudo` might work as a test (`sudo bgclicker`), but is generally not recommended for security.
+    *   Global hotkeys on Linux can sometimes require special permissions. Running the application with `sudo` might work as a test (`sudo bgclicker-git`).
     *   The `keyboard` library might have compatibility issues with certain display servers (e.g., Wayland). It generally works better with X11.
     *   Another application or your window manager might be using the F6 hotkey.
