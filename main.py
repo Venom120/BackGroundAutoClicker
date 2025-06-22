@@ -5,6 +5,8 @@ import subprocess
 import threading
 import time
 import keyboard
+import os
+os.environ['DISPLAY'] = ':0'
 
 class AutoInputGUI(tk.Tk): # Inherit from tk.Tk for main window
     def __init__(self):
