@@ -12,7 +12,7 @@ url="https://github.com/Venom120/bgclicker" # Replace with your actual repo URL
 license=('MIT') # Based on LICENSE file
 depends=('python' 'tk' 'python-keyboard' 'xdotool')
 makedepends=(git)
-source=(git+${url}.git#tag=${_tag})
+source=(git+${url}.git)
 sha256sums=('SKIP') # Use 'SKIP' for git sources
 
 pkgver() {
