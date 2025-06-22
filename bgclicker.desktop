@@ -2,8 +2,8 @@
 Type=Application
 Name=Background Auto Clicker
 Comment=A background auto clicker with GUI
-Exec=pkexec bgclicker
-Icon=bgclicker.svg
+Exec=pkexec bgclicker-git
+Icon=bgclicker-git.svg
 Terminal=false
 NoDisplay=false
 Categories=Utility;
