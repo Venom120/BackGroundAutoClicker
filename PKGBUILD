@@ -1,28 +1,27 @@
-# Maintainer: Your Name <your@email.com>
+# Maintainer: Yatharth Jain <yatharth3194@gmail.com>
+
+_tag = latest # Replace with the actual tag if needed
+
 pkgname=bgclicker-gui
-pkgver=1.0.0 # You might want to update this based on your project's versioning
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="A simple Python application with a GUI for performing background mouse clicks and keyboard inputs."
 arch=('any')
 url="https://github.com/Venom120/bgclicker-gui" # Replace with your actual repo URL
 license=('MIT') # Based on LICENSE file
 depends=('python' 'tk' 'python-keyboard' 'xdotool')
-makedepends=()
-source=(
-  "${pkgname}.desktop"
-  "${pkgname}.svg"
-  "main.py"
-)
+makedepends=(git)
+source=($pkgname-$pkgver.tar.gz)
 sha256sums=(
   'SKIP' # .desktop file might change, skip checksum for now
   'SKIP' # .svg file might change, skip checksum for now
   'SKIP' # main.py might change, skip checksum for now
 )
 
-build() {
-  # No build step needed for this simple Python script
-  # The source files are copied directly in the package() function
-  :
+pkgver() {
+  # Use git to determine the version based on tags
+  cd "$srcdir/$pkgname-$pkgver"
+  git describe --tags | sed 's/^v//;s/-/./g'
 }
 
 package() {
