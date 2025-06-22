@@ -18,11 +18,11 @@ sha256sums=('SKIP' # Need to generate checksum for the tarball
 
 package() {
   # Install main scripts
-  install -Dm755 main.py "$pkgdir"/usr/bin/bgclicker-gui
+  install -Dm755 "${pkgname}-${pkgver}/main.py" "$pkgdir"/usr/bin/bgclicker-gui
 
   # Install desktop file
-  install -Dm644 BackgroundClicker.desktop "$pkgdir"/usr/share/applications/bgclicker-gui.desktop
+  install -Dm644 "${pkgname}-${pkgver}/BackgroundClicker.desktop" "$pkgdir"/usr/share/applications/bgclicker-gui.desktop
 
   # Install icon
-  install -Dm644 bgclicker-gui.svg "$pkgdir"/usr/share/icons/hicolor/scalable/apps/bgclicker-gui.svg # Standard icon location
+  install -Dm644 "${pkgname}-${pkgver}/bgclicker-gui.svg" "$pkgdir"/usr/share/icons/hicolor/scalable/apps/bgclicker-gui.svg # Standard icon location
 }
