@@ -7,11 +7,11 @@ A simple Python application with a GUI for performing background mouse clicks an
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/Venom120/BackGroundAutoClicker.git
-    cd BackGroundAutoClicker
+    git clone https://github.com/Venom120/bgclicker-gui.git
+    cd bgclicker-gui
     ```
 
-3.  **Install using PKGBUILD (Arch Linux):**
+2.  **Install using PKGBUILD (Arch Linux):**
 
     If you are on Arch Linux or a derivative, you can build and install the package system-wide using the provided `PKGBUILD` file. This is the recommended method for desktop integration.
 
