@@ -1,5 +1,2 @@
 __pycache__/
-*.tar.gz
-src/
-pkg/
-bgclicker/
+.venv/
