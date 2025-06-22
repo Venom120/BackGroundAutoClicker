@@ -20,6 +20,9 @@ package() {
   # Install the main script
   install -Dm 755 main.py "${pkgdir}/usr/bin/${pkgname}"
 
+  # Install the License file
+  install -Dm 644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+
   # Install the desktop entry
   install -Dm 644 "bgclicker.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
 
