@@ -3,15 +3,7 @@
 A simple Python application with a GUI for performing background mouse clicks and keyboard inputs.
 
 ## Setup
-
-1.  **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/Venom120/bgclicker-gui.git
-    cd bgclicker-gui
-    ```
-
-2.  **Install using PKGBUILD (Arch Linux):**
+1.  **Install using PKGBUILD (Arch Linux):**
 
     If you are on Arch Linux or a derivative, you can build and install the package system-wide using the provided `PKGBUILD` file. This is the recommended method for desktop integration.
 
@@ -19,7 +11,7 @@ A simple Python application with a GUI for performing background mouse clicks an
     makepkg -si
     ```
 
-    This will install the application executable to `/usr/bin/bgclicker-gui` and the desktop entry to `/usr/share/applications/`.
+    This will install the application executable to `/usr/bin/bgclicker-git` and the desktop entry to `/usr/share/applications/`.
 
 ## Running the Application
 
@@ -34,7 +26,7 @@ The application should appear in your desktop environment's application menu. Se
 Open a terminal and run the executable:
 
 ```bash
-bgclicker-gui
+bgclicker
 ```
 
 ### Running without Installation (for Development/Testing)
@@ -63,6 +55,6 @@ python main.py
 *   **`ModuleNotFoundError: No module named 'keyboard'`**: Ensure you have installed the dependencies using `pip install -r req.txt` and are running the script within the activated virtual environment.
 *   **Hotkey (F6) not working**:
     *   Check the terminal for any error or warning messages related to hotkey binding when the application starts.
-    *   Global hotkeys on Linux can sometimes require special permissions. Running the application with `sudo` might work as a test (`sudo bgclicker-gui`), but is generally not recommended for security.
+    *   Global hotkeys on Linux can sometimes require special permissions. Running the application with `sudo` might work as a test (`sudo bgclicker`), but is generally not recommended for security.
     *   The `keyboard` library might have compatibility issues with certain display servers (e.g., Wayland). It generally works better with X11.
     *   Another application or your window manager might be using the F6 hotkey.

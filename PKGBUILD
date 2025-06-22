@@ -1,36 +1,34 @@
 # Maintainer: Yatharth Jain <yatharth3194@gmail.com>
 
-_tag = latest # Replace with the actual tag if needed
+_tag=cb55a809a5ec8ef636cf2d234d92d8ce35123dc6 # Replace with the actual tag if needed
+_sourceName="bgclicker"
 
-pkgname=bgclicker-gui
-pkgver=1.0.0
+pkgname=bgclicker-git
+pkgver=latest.1.ge22353d
 pkgrel=1
 pkgdesc="A simple Python application with a GUI for performing background mouse clicks and keyboard inputs."
 arch=('any')
-url="https://github.com/Venom120/bgclicker-gui" # Replace with your actual repo URL
+url="https://github.com/Venom120/bgclicker" # Replace with your actual repo URL
 license=('MIT') # Based on LICENSE file
 depends=('python' 'tk' 'python-keyboard' 'xdotool')
 makedepends=(git)
-source=($pkgname-$pkgver.tar.gz)
-sha256sums=(
-  'SKIP' # .desktop file might change, skip checksum for now
-  'SKIP' # .svg file might change, skip checksum for now
-  'SKIP' # main.py might change, skip checksum for now
-)
+source=(git+${url}.git#tag=${_tag})
+sha256sums=('SKIP') # Use 'SKIP' for git sources
 
 pkgver() {
   # Use git to determine the version based on tags
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "${_sourceName}"
   git describe --tags | sed 's/^v//;s/-/./g'
 }
 
 package() {
+  cd "${_sourceName}"
   # Install the main script
-  install -Dm755 main.py "/usr/bin/${pkgname}"
+  install -Dm 755 main.py "${pkgdir}/usr/bin/${pkgname}"
 
   # Install the desktop entry
-  install -Dm644 "${pkgname}.desktop" "/usr/share/applications/${pkgname}.desktop"
+  install -Dm 644 "bgclicker.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
 
   # Install the icon
-  install -Dm644 "${pkgname}.svg" "/usr/share/icons/hicolor/scalable/apps/${pkgname}.svg"
+  install -Dm 644 "bgclicker.svg" "${pkgdir}/usr/share/icons/hicolor/scalable/apps/${pkgname}.svg"
 }
