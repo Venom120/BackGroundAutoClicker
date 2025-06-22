@@ -2,7 +2,7 @@
 Type=Application
 Name=Background Auto Clicker
 Comment=A background auto clicker with GUI
-Exec=sudo python bgclicker-git
+Exec=pkexec bgclicker-git
 Icon=bgclicker-git.svg
 Terminal=false
 NoDisplay=false
