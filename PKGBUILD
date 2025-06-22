@@ -15,12 +15,6 @@ makedepends=(git)
 source=(git+${url}.git)
 sha256sums=('SKIP') # Use 'SKIP' for git sources
 
-pkgver() {
-  # Use git to determine the version based on tags
-  cd "${_sourceName}"
-  git describe --tags | sed 's/^v//;s/-/./g'
-}
-
 package() {
   cd "${_sourceName}"
   # Install the main script
