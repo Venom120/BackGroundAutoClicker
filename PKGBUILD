@@ -3,16 +3,16 @@
 _sourceName="bgclicker"
 
 pkgname=bgclicker-git
-pkgver=1.0.0 # Replace with your actual version
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="A simple Python application with a GUI for performing background mouse clicks and keyboard inputs."
 arch=('any')
-url="https://github.com/Venom120/bgclicker" # Replace with your actual repo URL
-license=('MIT') # Based on LICENSE file
+url="https://github.com/Venom120/bgclicker"
+license=('MIT')
 depends=('python' 'tk' 'python-keyboard' 'xdotool')
 makedepends=(git)
 source=(git+${url}.git)
-sha256sums=('SKIP') # Use 'SKIP' for git sources
+sha256sums=('SKIP')
 
 package() {
   cd "${_sourceName}"
